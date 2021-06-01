@@ -1,5 +1,7 @@
 # Kustomize Hash Annotator
 
+Kustomize plugin to add annotations with the hash value of specified resources.
+
 ## Background
 
 At the time of writing, for ConfigMap and Secret declared from ConfigMapGenerator
