@@ -15,8 +15,8 @@ import (
 )
 
 type hashannotator struct {
-	Targets    []*types.Selector   `json:"targets,omitempty" yaml:"targets,omitempty"`
-	Resources  []*types.Selector   `json:"resources,omitempty" yaml:"resources,omitempty"`
+	Targets    []*types.Selector `json:"targets,omitempty" yaml:"targets,omitempty"`
+	Resources  []*types.Selector `json:"resources,omitempty" yaml:"resources,omitempty"`
 	FieldSpecs []types.FieldSpec `json:"fieldSpecs,omitempty" yaml:"fieldSpecs,omitempty"`
 	hasher     ifc.KustHasher
 }
@@ -80,7 +80,6 @@ func main() {
 			an[key] = h
 		}
 	}
-
 
 	for _, t := range p.Targets {
 		targets, err := m.Select(*t)
