@@ -13,6 +13,6 @@ PLUGIN_NAME="HashAnnotator"
 
 mkdir -p $PLUGIN_PATH
 
-echo "Copying exec plugin to the kustomize plugin path..."
-echo "cp $PLUGIN_NAME $PLUGIN_PATH/$PLUGIN_KIND"
-cp $PLUGIN_NAME "$PLUGIN_PATH/$PLUGIN_KIND"
+echo "Moving the plugin to the kustomize plugin path..."
+echo "mv $PLUGIN_NAME $PLUGIN_PATH/$PLUGIN_KIND"
+mv $PLUGIN_NAME "$PLUGIN_PATH/$PLUGIN_KIND"
