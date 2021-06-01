@@ -1,4 +1,4 @@
-project_name: HashAnnotator
+project_name: hashannotator
 before:
   hooks:
     - go mod download
@@ -9,7 +9,7 @@ builds:
       - linux
       - windows
       - darwin
-    binary: "{{ .ProjectName }}"
+    binary: '{{ .ProjectName }}'
 archives:
   - id: default
     replacements:
@@ -19,7 +19,7 @@ archives:
       386: i386
       amd64: x86_64
   - id: latest
-    name_template: "{{ .ProjectName }}_latest_{{ .Os }}_{{ .Arch }}"
+    name_template: '{{ .ProjectName }}_latest_{{ .Os }}_{{ .Arch }}'
     replacements:
       darwin: Darwin
       linux: Linux
@@ -27,15 +27,15 @@ archives:
       386: i386
       amd64: x86_64
 checksum:
-  name_template: "checksums.txt"
+  name_template: 'checksums.txt'
 snapshot:
-  name_template: "{{ .Tag }}-next"
+  name_template: '{{ .Tag }}-next'
 changelog:
   sort: asc
   filters:
     exclude:
-      - "^docs:"
-      - "^test:"
+      - '^docs:'
+      - '^test:'
 release:
   github:
     owner: pcjun97
