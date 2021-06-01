@@ -36,6 +36,8 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
+      - '^chore:'
+      - '^ci:'
 release:
   github:
     owner: pcjun97
