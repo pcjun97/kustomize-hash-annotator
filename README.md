@@ -32,14 +32,15 @@ echo "export XDG_CONFIG_HOME=\$HOME/.config" >> $HOME/.bashrc
 
 ```bash
 mkdir -p $XDG_CONFIG_HOME/kustomize/plugin/pcjun97/v1/hashannotator/v1
-wget -c https://github.com/pcjun97/kustomize-hash-annotator/releases/latest/download/hashannotator_latest_$(uname -sm).tar.gz -O hashannotator_latest.tar.gz
+wget -c https://github.com/pcjun97/kustomize-hash-annotator/releases/latest/download/hashannotator_latest_$(uname -s)_$(uname -m).tar.gz -O hashannotator_latest.tar.gz
 tar -xz hashannotator_latest.tar.gz -C $XDG_CONFIG_HOME/kustomize/plugin/pcjun97/v1/hashannotator/
 ```
 
 ### Run `make install` with the cloned repo Locally
 
 ```bash
-# install plugin under hashannotator
+git clone https://github.com/pcjun97/kustomize-hash-annotator.git
+cd kustomize-hash-annotator
 make install
 ```
 
