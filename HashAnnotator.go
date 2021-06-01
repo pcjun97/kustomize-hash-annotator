@@ -15,8 +15,8 @@ import (
 )
 
 type hashannotator struct {
-	Target     *types.Selector   `json:"target,omitempty" yaml:"target,omitempty"`
-	Resource   *types.Selector   `json:"resource,omitempty" yaml:"resource,omitempty"`
+	Targets    []*types.Selector   `json:"targets,omitempty" yaml:"targets,omitempty"`
+	Resources  []*types.Selector   `json:"resources,omitempty" yaml:"resources,omitempty"`
 	FieldSpecs []types.FieldSpec `json:"fieldSpecs,omitempty" yaml:"fieldSpecs,omitempty"`
 	hasher     ifc.KustHasher
 }
@@ -56,37 +56,48 @@ func main() {
 		os.Exit(1)
 	}
 
-	targets, err := m.Select(*p.Target)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "error selecting target: %q", err)
-		os.Exit(1)
-	}
-
-	resources, err := m.Select(*p.Resource)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "error selecting resource: %q", err)
-		os.Exit(1)
-	}
-
 	an := make(map[string]string)
-	for _, res := range resources {
-		h, err := res.Hash(p.hasher)
+
+	for _, r := range p.Resources {
+		resources, err := m.Select(*r)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "error hashing resource: %q", err)
+			fmt.Fprintf(os.Stderr, "error selecting resource: %q", err)
 			os.Exit(1)
 		}
-		key := fmt.Sprintf("kustomize.config.k8s.io/hash-%s-%s-%s", res.GetNamespace(), strings.ToLower(res.GetKind()), res.GetName())
-		an[key] = h
+		for _, res := range resources {
+			h, err := res.Hash(p.hasher)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "error hashing resource: %q", err)
+				os.Exit(1)
+			}
+
+			ns := res.GetNamespace()
+			if len(ns) > 0 {
+				ns = "-" + ns
+			}
+
+			key := fmt.Sprintf("kustomize.k8s.io/hash%s-%s-%s", ns, strings.ToLower(res.GetKind()), res.GetName())
+			an[key] = h
+		}
 	}
 
-	for _, target := range targets {
-		err = target.ApplyFilter(annotations.Filter{
-			Annotations: an,
-			FsSlice:     p.FieldSpecs,
-		})
+
+	for _, t := range p.Targets {
+		targets, err := m.Select(*t)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "error applying annotations filter: %q", err)
+			fmt.Fprintf(os.Stderr, "error selecting target: %q", err)
 			os.Exit(1)
+		}
+
+		for _, target := range targets {
+			err = target.ApplyFilter(annotations.Filter{
+				Annotations: an,
+				FsSlice:     p.FieldSpecs,
+			})
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "error applying annotations filter: %q", err)
+				os.Exit(1)
+			}
 		}
 	}
 
