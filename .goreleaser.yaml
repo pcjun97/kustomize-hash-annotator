@@ -1,4 +1,4 @@
-project_name: hashannotator
+project_name: HashAnnotator
 before:
   hooks:
     - go mod download
@@ -19,7 +19,7 @@ archives:
       386: i386
       amd64: x86_64
   - id: latest
-    name_template: '{{ .ProjectName }}_latest_{{ .Os }}_{{ .Arch }}'
+    name_template: '{{ tolower .ProjectName }}_latest_{{ .Os }}_{{ .Arch }}'
     replacements:
       darwin: Darwin
       linux: Linux
