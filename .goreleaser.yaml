@@ -10,11 +10,6 @@ builds:
       - windows
       - darwin
     binary: "{{ .ProjectName }}"
-    ignore:
-      - goos: windows
-        goarch: arm64
-      - goos: darwin
-        goarch: arm64
 archives:
   - id: default
     replacements:
